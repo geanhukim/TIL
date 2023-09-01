@@ -60,7 +60,13 @@
     - [CSS 단위 복습](#css-단위-복습)
     - [CSS 단위: ems](#css-단위-ems)
     - [CSS 단위: rems](#css-단위-rems)
-- 섹션 9: CSS: 유용한 CSS 속성들
+- [섹션 9: CSS: 유용한 CSS 속성들](#섹션-9-유용한-css-속성들)
+    - [불투명도와 알파채널](#불투명도와-알파-채널)
+    - [위치 속성](#위치-속성)
+    - [CSS 전환](#css-전환)
+    - [CSS 변환이 가진 능력](#css-변환이-가진-능력)
+    - [배경에 관한 진실](#배경에-관한-진실)
+    - [놀라운 구글의 글꼴](#놀라운-구글의-글꼴)
 - 섹션 10: CSS: 반응형 CSS 및 Flexbox
 - 섹션 12 CSS 프레임워크 : 부트스트랩(Bootstrap)
 
@@ -614,6 +620,80 @@
 - 처음에는 그냥 있다가, 스크롤을 내리다 보면 그 위치에 고정됨
 ## CSS 전환
 - 한 특성값에서 다른 값으로 변할 때 애니메이션 효과를 주는 것
+- transition: (property name) (duration) (timing function) (delay)
+    - property name
+        - 효과를 줄 property를 각각 지정할 수 있음
+    - duration
+        - 애니메이션의 속도를 지정함
+    - timing function
+        - 애니메이션 속도의 다이내믹을 지정함
+        - ease-in, ease-out, linear 등 다양한 옵션이 있음
+    - delay
+        - 애니메이션이 시작되는 시점을 늦춤
 ## CSS 변환이 가진 능력
-## 멋진 버튼 호버(hover) 효과 주기
+- 확대, 축소, 회전, 늘리기 등 다양한 효과를 줄 수 있음
+- 자식 요소에도 영향을 줌
 ## 배경에 관한 진실
+- background-image
+    - background-image: url()
+        - url에 이미지의 주소를 입력
+- background-size
+    - contain : 이미지의 비율, 편집 없이 나타남, 이미지가 반복됨
+    - cover : 박스 크기에 맞게 조정, 이미지가 더 크면 자름
+- background-position
+    - 이미지가 시작될 지점을 설정  
+- background shorthand
+    - 값의 순서는 상관없음
+    - position과 size를 같이 사용하려면 position/size로 사용해야 함
+## 놀라운 구글의 글꼴
+- 무료 폰트
+- 폰트를 다운받는 것이 아닌, 사이트에서 링크를 통해 사용할 수 있음
+# 섹션 10: 반응형 CSS 및 Flexbox
+## Flexbox가 대체 뭐야?
+- 콘텐츠 박스안에 아이템을 배치하는데 쓰임
+- 웹 페이지의 크기가 줄거나, 늘어날 때, 그 안에 있는 요소의 크기, 요소간의 공간, 요소의 배열 방법 등을 변화 시킬 수 있음 -> 페이지를 더 보기 좋게 만듬
+## Flex-Direction
+### display: flex
+- 컨테이너를 flex로 설정함
+- 컨테이너는 main axis(본축, 가로), cross axis(교차축, 세로)를 가짐
+### flex-direction
+- 본축의 방향을 설정함
+- row : 좌 -> 우
+- row-reverse : 우 -> 좌
+- column : 상 -> 하
+- column-reverse : 하 -> 상
+## Justify-Content
+- 본축을 기준으로 요소와 콘텐츠를 어떻게 배치할지 결정
+### flext-start
+- 본축의 방향대로 콘텐츠를 배치함
+### flex-end
+- 본축의 역뱡향대로 콘텐츠를 배치함
+### center
+- 본축을 따라 콘텐츠를 중앙으로 옮김
+### space-between
+- 바깥쪽 여백을 없애고, 요소 사이에만 빈 곳이 생김
+### space-around
+- 요소의 둘레에 똑같은 크기의 여백을 부여함
+### space-evenly
+- 요소 사이, 요소와 컨테이너 사이에 동일한 크기의 여백을 부여함
+## Flex-Wrap
+- 새로운 행/열을 만들어 요소를 정렬
+### wrap
+- 교차축의 방향대로 새로운 행/열을 만듦
+### wrap-reverse
+- 교차축의 역방향대로 새로운 행/열을 만듦
+## Align-Items
+- 교차축을 따라 요소를 배열함
+### flext-start
+- 교차축의 첫 부분에 콘텐츠를 배치함
+### flex-end
+- 교차축의 끝 부분에 콘텐츠를 배치함
+### center
+- 콘텐츠를 교차축의 중앙으로 옮김
+### base-line
+- 텍스트의 기준선(밑줄)에 맞춰 정렬함
+## Align-Content & Align-Self
+## Flex-Basis, Grow, & Shrink
+## Flex Shorthand
+## 반응형 디자인 및 미디어 쿼리 개요
+## 미디어 쿼리의 능력
