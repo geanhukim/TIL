@@ -19,7 +19,18 @@
     - [엄청나게 유용한 문자열 템플릿](#엄청나게-유용한-문자열-템플릿)
     - [Undefined와 Null](#undefined와-null)
     - [난수와 Math 개체](#난수와-math-개체)
-- 섹션 16: JavaScript 판단 내리기
+- [섹션 16: JavaScript 판단 내리기](#섹션-16-javascript-판단-내리기)
+    - [비교 연산자](#비교-연산자)
+    - [등식: 삼중 등호 vs 이중 등호](#등식-삼중-등호-vs-이중-등호)
+    - [Console, Alert, Prompt코드](#console-alert-prompt코드)
+    - [JavaScript 실행하기!](#javascript-실행하기)
+    - [If 구문](#if-구문)
+    - [Else-If 구문](#else-if-구문)
+    - [Else 구문](#else-구문)
+    - [Truthy 값과 Falsy 값](#truthy-값과-falsy-값)
+    - [논리 함수 AND](#논리-함수-and)
+    - [논리 함수 OR](#논리-함수-or)
+    - [논리 함수 NOT](#논리-함수-not)
 - 섹션 17: JavaScript 배열
 - 섹션 18: JavaScript 객체 리터럴 (Literals)
 - 섹션 19: 루프의 구조
@@ -170,3 +181,141 @@
     ```
 - Math.random()
     - 0부터 1사이의 랜덤한 값을 반환
+# 섹션 16: JavaScript 판단 내리기
+## 비교 연산자
+- `>`, `<`, `>=`, `<=`
+- true or false 반환
+- Number 뿐 만 아니라 String간의 비교도 가능
+    - 유니코드간의 비교
+## 등식: 삼중 등호 vs 이중 등호
+### `==`
+- 두 값이 같은지 비교
+- 타입은 고려하지 않음
+- 두 값이 다른 타입이면 타입을 같게 만들어 비교
+```javascript
+    5 == 5; //true
+    7 == '7'; //true
+    0 == false; //true
+    null == undefined; //true
+```
+### `===`
+- 값과 타입 모두 비교
+```javascript
+    5 == 5; //true
+    7 == '7'; //false
+    0 == false; //false
+    null == undefined; //false
+```
+### `!=`, `!==`
+- 비동등 연산자
+- 두 값이 다르면 true 같으면 false를 반환
+- 타입 고려 x/ 고려 o
+## Console, Alert, Prompt코드
+### console.log()
+- 인수를 콘슬에 출력
+### alert()
+- 인수를 팝업 창을 통해 출력
+### prompt()
+- 값을 입력할 수 있는 팝업 창을 출력
+### parseInt()
+- String인 인수를 Number로 변환함
+## JavaScript 실행하기!
+- js파일을 만들고 html파일에서 `<script>`를 통해 파일을 연결함
+- `<script>`는 `<body>`바로 전에 위치해야 함
+## If 구문
+```js
+if (조건) {
+    '값이 true일 때 실행될 코드'
+}
+```
+## Else-If 구문
+```js
+if (조건1) {
+    '값이 true일 때 실행될 코드'
+}
+else if (조건2) {
+    '값이 true일 때 실행될 코드'
+}
+```
+- 조건2는 조건1이 false일 때만 실행됨
+## Else 구문
+```js
+if (조건1) {
+    '값이 true일 때 실행될 코드'
+}
+else if (조건2) {
+    '값이 true일 때 실행될 코드'
+}
+else {
+    '실행될 코드'
+}
+```
+- else 구문은 모든 조건문이 false일 때만 실행됨
+## Truthy 값과 Falsy 값
+- boolean외에 다른 타입들도 각각 Truthy 값과 Falsy 값 중 하나를 가지고 있음
+- falsy 값
+    - false
+    - 0
+    - ""(empty string)
+    - null
+    - undefined
+    - NaN
+- 나머지 값들은 모두 truthy
+- boolean이 아닌 값들이 boolean으로 변경되어야 한다면 truthy or falsy인지를 확인하여 true or false를 반환함
+## 논리 함수 AND
+- `&&`
+```js
+1 == 1 && 2 == 2 //true
+1 == 1 && 2 == 3 //false
+```
+- 첫 식이 거짓이면 다른 식은 평가하지 않음
+## 논리 함수 OR
+- `||`
+```js
+1 == 1 || 2 == 2 //true
+1 == 1 || 2 == 3 //true
+```
+- `&&`가 `||`보다 우선순위가 높음
+## 논리 함수 NOT
+- `!`
+```js
+!null //true
+!( 0 === 0) //false
+!(3 <= 4) //false
+``` 
+
+# JavaScript 배열
+## 배열 개요
+- 순서가 있는 값들의 집합
+```js
+//empty array
+let array = [];
+
+//array of strings
+let array = ['hi', 'heel', 'oo'];
+
+//array of numbers
+let array = [2, 4, 1, 6];
+
+//mixsed array
+let array = [true, null, 2, 'hi']
+```
+## 배열 임의 접근
+- 배열도 string과 마찬가지로 인덱싱이 되어있음
+- 0부터 시작함
+- string과는 다르게 접근한 배열의 값을 변경할 수 있음
+    - string.length를 넘는 숫자를 인덱싱하면 사이에 있는 배열에는 empty가 입력됨
+## Push와 Pop 메서드
+### push(elementN)
+- 배열 끝에 값(elementN)을 추가
+- 배열의 새 length를 반환
+### pop()
+- 배열의 마지막 값을 제거
+- 마지막 값을 반환
+## Shift와 Unshift 메서드
+### Shift()
+- 배열의 첫 값을 제거
+- 제거된 값을 반환
+### Unshift(elementN)
+- 배열의 앞쪽에 값(elementN)을 추가
+- 배열의 새 length를 반환
