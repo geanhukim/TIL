@@ -31,8 +31,22 @@
     - [논리 함수 AND](#논리-함수-and)
     - [논리 함수 OR](#논리-함수-or)
     - [논리 함수 NOT](#논리-함수-not)
-- 섹션 17: JavaScript 배열
-- 섹션 18: JavaScript 객체 리터럴 (Literals)
+- [섹션 17: JavaScript 배열](#섹션-17-javascript-배열)
+    - [배열 개요](#배열-개요)
+    - [배열 임의 접근](#배열-임의-접근)
+    - [Push와 Pop 메서드](#push와-pop-메서드)
+    - [Shift와 Unshift 메서드](#shift와-unshift-메서드)
+    - [Concat, indexOf, includes, reverse 메서드](#concat-indexof-includes-reverse-메서드)
+    - [Slice와 Splice 메서드](#slice와-splice-메서드)
+    - [참조 타입과 동일성 테스트](#참조-타입과-동일성-테스트)
+    - [배열 + Const](#배열--const)
+    - [다차원 배열](#다차원-배열)
+- [섹션 18: JavaScript 객체 리터럴 (Literals)](#섹션-18-javascript-객체-리터럴-literals)
+    - [객체 리터럴 (Object Literals) 개요](#객체-리터럴-object-literals-개요)
+    - [객체 리터럴 생성하기](#객체-리터럴-생성하기)
+    - [객체 외부 데이터에 액세스하기](#객체-외부-데이터에-엑세스하기)
+    - [객체 수정하기](#객체-수정하기)
+    - [배열과 객체 네스트 구성하기](#배열과-객체-네스트-구성하기)
 - 섹션 19: 루프의 구조
 - 섹션 20: 함수란?
 - 섹션 21: 함수 레벨 업
@@ -284,7 +298,7 @@ else {
 !(3 <= 4) //false
 ``` 
 
-# JavaScript 배열
+# 섹션 17: JavaScript 배열
 ## 배열 개요
 - 순서가 있는 값들의 집합
 ```js
@@ -319,3 +333,160 @@ let array = [true, null, 2, 'hi']
 ### Unshift(elementN)
 - 배열의 앞쪽에 값(elementN)을 추가
 - 배열의 새 length를 반환
+## Concat, indexOf, includes, reverse 메서드
+### concat
+- 배열 2개를 합쳐 새로운 배열을 반환함
+    ```js
+    let array1 = ['a', 'b'];
+    let array2 = ['c', 'd'];
+    let array3 = array1.concat(array2);
+    array3;
+    //['a', 'b', 'c', 'd'];
+    ``` 
+### indexOf
+- 배열에 특정 값이 있으면 그 값의 인덱스 값을 반환함, 없으면 -1
+    ```js
+    array.indexOf('a'); //0
+    array.indexOf('d'); //-1
+    ```
+### includes
+- 배열이 특정 값을 포함하는 지 확인후 true/false를 반환
+    ```js
+    array1.includes('a'); //true
+    array2.includes('a'); //false
+    ```
+### reverse
+- 배열을 뒤집음
+    ```js
+    array3.reverse();
+    // ['d,', 'c', 'b', 'a']
+    ```
+## Slice와 Splice 메서드
+### slice([n, m])
+- 배열의 일부를 복사
+- n부터 m-1까지의 값을 복사
+    ```js
+    let color = ['red', 'yellow', 'orange', 'green', 'blue'];
+    color.slice(2);
+    // ['orange', 'green', 'blue']
+    color.slice(1,4);
+    // ['yellow', 'orange', 'green']
+    color.slice(-2);
+    // ['green', 'blue']
+    ```
+### splice
+- 기존 요소들을 제거/대체하거나 새로운 요소를 추가함
+    ```js
+    const months = ['Jan', 'March', 'April', 'June'];
+    months.splice(1, 0, 'Feb');
+    // ["Jan", "Feb", "March", "April", "June"]
+
+    months.splice(4, 1, 'May');
+    // ["Jan",   "Feb", "March", "April", "May"]
+    ```
+### sort
+- 배열을 정렬함
+- 문자열로 변환 후, UTF-16 유닛 값을 비교 후 정렬
+- 보통 함수를 사용하여 커스터마이징 함
+## 참조 타입과 동일성 테스트
+- 내용이 같은 배열이라도 `==`나 `===`로 비교했을 때 결과는 false
+- 비교되는건 배열의 값이 아닌 메모리에서 참조되는 값
+- 배열을 생성하면 이것은 메모리에서 생성되어 고유한 주소를 가짐
+- ```js
+    let array1 = [1,2];
+    let array2 = array1;
+    array1 === array2; //true
+    // 같은 참조 주소를 공유하기 때문
+    ```
+## 배열 + Const
+- 배열을 생성할 때 `const`를 사용가능
+- `const`를 써도 배열의 콘텐츠를 바꿀 수 있음
+- but, 새로운 배열의 참조 주소를 할당하는 것은 불가
+
+## 다차원 배열
+- 배열에 배열을 중첩하는 것
+    ```js
+    let array = [[1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]
+                ];
+    array[0][1]; // 2
+    array[1][1]; //5
+    ```
+
+# 섹션 18: JavaScript 객체 리터럴 (literals)
+## 객체 리터럴 (Object Literals) 개요
+- 프로퍼티(property)의 집합
+    - 프로퍼티 : 키-값 쌍
+- 인덱스 값이 아니라 키를 통해 데이터에 접근함
+- 다양한 값을 넣을 수 있음
+- 배열과 달리 순서가 없음
+## 객체 리터럴 생성하기
+- ```js
+    let person = {
+        firstName: 'Mick',
+        lastName: 'Jagger',
+        age: 23,
+        marriage: true,
+        child: ['Jane', 'Shawn']
+    }; 
+    ```
+## 객체 외부 데이터에 엑세스하기
+- 대괄호, 따옴표 사용
+    ```js
+    person["firstName"]; // "Mick"
+    ```
+- 점 사용
+    ```js
+    person.firstName; // "Mick"
+    ```
+- 객체에서 만드는 키는 문자열로 변환 됨
+## 객체 수정하기
+- 대괄호/점 사용법을 통해 기존 객체 값을 바꾸거나, 새로운 키-값 쌍을 추가할 수 있음
+```js
+person.age = 54;
+person['age']; //54
+person.['job']= 'doctor';
+person.job; //'doctor'
+```
+## 배열과 객체 네스트 구성하기
+- 배열 + 객체 리터럴
+- 객체 안에 배열을 넣을 수도 있고, 배열 안에 객체를 넣을 수도 있음
+# 섹션 19: 루프의 구조
+## For 루프
+- 같은 일을 반복할 때 동일한 코드를 여러 번 적는 대신 루프를 활용
+- ex
+    ```js
+    for (let i = 1; i <=10; i++) {
+        console.log(i);
+    }
+    ```
+## 무한 루프의 위험성
+- 멈추지 않는 루프
+- 브라우저와 js의 메모리가 부족해 중단되긴 함
+- 컴퓨터가 원하지 않는 방향으로 작동하거나, 브라우저가 잠길 수도 있음
+- So, 어떤 시점에 루프가 정지할 것인지 확실히 해야 함
+## 배열 루프
+- 루프를 통해 인덱스 값을 늘려나가면서 배열에 접근할 수 있음
+## 중첩 루프
+- 루프 안에 있는 루프
+- 루프1(i=0; i<=5)안에 루프2(j=0;j<=3)이 있다
+    - 루프1이 한 바퀴 돌 때, 루프2는 세 바퀴 돔
+    - 루프1이 두 바퀴 째일 때, 루프2는 다시 세 바퀴를 돔
+## 또다른 루프: While 루프
+- ex
+    ```js
+    let num = 0;
+    while (num < 3) {
+        console.log(num);
+        num++;
+    }
+    /*
+    0
+    1
+    2
+    */
+    ```
+## 정지/break 키워드
+- 특정 조건뒤에 `break`를 작성하면 크 조건을 만족한 뒤에 루프를 끝냄
+## For 루프의 유용함
