@@ -72,8 +72,25 @@
     - [메서드 정의하기](#메서드-정의하기)
     - ['this'라는 불가사의한 키워드](#this라는-불가사의한-키워드)
     - [Try/Catch 사용하기](#trycatch-사용하기)
-- 섹션 22: 콜백과 배열
-- 섹션 23: JavaScript의 최신 기능들
+- [섹션 22: 콜백과 배열](#섹션-22-콜백과-배열)
+    - [forEach 메서드](#foreach-메서드)
+    - [Map 메서드](#map-메서드)
+    - [화살표 함수 개요](#화살표-함수-개요)
+    - [화살표 함수의 반환](#화살표-함수의-반환)
+    - [setTimeout과 setInterval](#settimeout과-setinterval)
+    - [Filter 메서드](#filter-메서드)
+    - [Some과 every 메서드](#some과-every-메서드)
+    - [악명 높은 Reduce 메서드](#악명-높은-reduce-메서드)
+    - [화살표 함수와 'this'](#화살표-함수와-this)
+- [섹션 23: JavaScript의 최신 기능들](#섹션-23-javascript의-최신-기능들)
+    - [기본 매개 변수](#기본-매개-변수)
+    - [#함수 호출 시의 스프레드 구문](#함수-호출-시의-스프레드-구문)
+    - [배열 리터럴 스프레드 구문](#배열-리터럴-스프레드-구문)
+    - [객체 스프레드 구문](#객체-스프레드-구문)
+    - [Rest 매개 변수](#rest-매개-변수)
+    - [배열 분해](#배열-분해)
+    - [객체 분해](#객체-분해)
+    - [매개 변수 분해](#매개변수-분해)
 - 섹션 24: DOM이란?
 - 섹션 25: 잃어버린 퍼즐 한 조각: DOM 이벤트
 - 섹션 27: 비동기식 JavaScript
@@ -654,3 +671,151 @@ try {
     // 2, 4, 6
     ```
 ## 화살표 함수 개요
+- 함수를 정의하는 최신 구문
+- `function` 키워드 없이도 함수를 입력할 수 있음 
+```js
+const sum = (x, y) => {
+    return x + y;
+}
+```
+- 인수가 1개일 때는 괄호가 없어도 됨
+## 화살표 함수의 반환
+- 함수의 바디에 표현식이 하나만 있을 경우 사용 가능
+```js
+const add = (a, b) => (
+    a + b
+)
+
+const add = (a, b) => a +b
+```
+- 기존에 대괄호로 묶은 함수의 바디를 소괄호로 묶으면 `return`없이도 표현식의 값을 반환 함
+## setTimeout과 setInterval
+- 콜백 함수를 전달해야 하지만, 배열 메서드는 아님
+### setTimeout
+- 콜백 함수를, 설정한 값만큼 후에 실행 함
+```js
+setTimeout(() => {
+    console.log("hi")
+}, 3000)
+// 3000ms 후에 'hi'를 출력
+```
+### setInterval
+- 콜백 함수를 설정한 밀리 초마다 호출함
+```js
+setInterval(() => {
+    console.log("hi")
+}, 3000)
+// 3000ms 마다 'hi'를 출력
+```
+- `clearInterval()`를 통해 멈출 수 있음
+## Filter 메서드
+- 요소로 구성된 배열에서 필터링을 하거나, 부분 집합을 모아 새 배열을 만드는데 사용
+- 원본에 영향을 주지 않음
+```js
+const nums - [5, 4, 3, 2, 1];
+const odds = nums.filter(n => {
+    return n % 2 === 1;
+})
+// [5, 3, 1]
+```
+## Some과 every 메서드
+### some
+- 배열의 모든 요소가 콜백함수로 전달되어 한 요소라도 true을 반환하면, `some`함수도 true를 반환함
+### every
+- 배열의 모든 요소가 콜백함수로 전달되어 true을 반환하면, `every`함수도 true를 반환함
+- 배열의 요소 중 하나라도 false라면 함수는 false를 반환
+## 악명 높은 Reduce 메서드
+- 배열을 점차 줄여가면서 하나의 값만 남기는 것
+```js
+ const evens = [2, 4, 6, 8];
+ eves.reduce((sum, num) => sum + num)
+ /* 2 + 4 = 6
+ 6 + 6 = 12
+ 12 + 8 = 20
+ */
+```
+- 두 번째 인수를 추가해서 반환값(ex. sum)의 초기값을 설정할 수 있음
+## 화살표 함수와 'this'
+- 화살표 함수 안에 있는 `this`는 함수가 만든 범위를 가리킴
+    - 객체 리터럴 안에 있는 함수에서 `this`를 사용하면 `window`객체를 가리킴
+- 객체 리터럴 내의 함수를 정의할 때는 화살표 함수를 사용하면 안됨
+
+# 섹션 23: JavaScript의 최신 기능들
+## 기본 매개 변수
+- 매개변수가 없을 때 디폴트 매개변수를 사용함
+- 인수를 입력할 때 디폴트 값을 정의해줌
+```js
+funciton sum(a, b = 1) {
+    return a + b;
+}
+```
+## 함수 호출 시의 스프레드 구문
+- 반복 가능한 객체를 확장해서 사용함
+- 객체 앞에 `...`을 붙여서 사용
+```js
+Math.max(1, 3, 4, 6, 345)
+// 345
+const nums = [1, 3, 4, 6, 345]
+Math.max(nums) // NaN
+Math.max(...nums) // 345
+```
+## 배열 리터럴 스프레드 구문
+- 기존의 배열을 스프레드 하여 새로운 배열을 만들 수 있음
+```js
+const nums1 = [1, 2, 3];
+const nums2 = [4, 5, 6];
+
+[...nums1, ...num2];
+// [1, 2, 3, 4, 5, 6];
+```
+## 객체 스프레드 구문
+- 객체의 특성을 복사하여 새로운 객체를 만듦
+## Rest 매개 변수
+- `Arguments`
+    - 배열과 유사한 객체
+    - 배열 메서드를 사용할 수 없음
+- 배열 메서드를 사용하기 위해서 매개 변수에 `...`을 붙여 인수들을 배열로 나타냄
+```js
+function sumAll(...nums) {
+    let total = 0;
+    for (let n of nums) total += n;
+    return total;
+}
+
+sumAll(1, 2, 3, 4, 5) //15
+```
+## 배열 분해
+- 배열을 해체해서 별개의 변수 형태로 만들 수 있음
+```js
+const scores [199, 150, 130, 95, 23];
+
+const [gold, silver] = scores;
+
+gold; // 199
+silver; // 150
+```
+## 객체 분해
+- 객체의 프로퍼티나 매서드를 꺼내서 별개의 변수로 정의할 수 있음
+- `프로퍼티명: 새로운이름`을 통해 변수명을 새로 정의할 수 있음
+`프로퍼티명 = 디폴트값`을 통해 프로퍼티의 값이 없을 경우의 디폴트 값을 설정할 수 있음
+```javascript
+const runner = {
+    first: "Eliud",
+    last: "Kipchoge",
+    age: 26,
+}
+
+const {first, last: "lastName",countr y= "IDK"} = runner;
+
+first; // "Eliud"
+lastName; // "Kipchoge"
+country; // "IDK"
+```
+## 매개변수 분해
+- 
+```js
+const fullName = ({first, last}) => {
+    return `$(first) $(last)`
+}
+fullName(runner); // "Eliud Kipchoge"
+```
