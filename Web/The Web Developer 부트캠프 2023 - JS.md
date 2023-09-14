@@ -812,10 +812,89 @@ lastName; // "Kipchoge"
 country; // "IDK"
 ```
 ## 매개변수 분해
-- 
+
 ```js
 const fullName = ({first, last}) => {
     return `$(first) $(last)`
 }
 fullName(runner); // "Eliud Kipchoge"
 ```
+# 섹선 24: DOM이란?
+## DOM 개요
+- 문서 객체 모델
+- 웹 페이지를 구성하는 JavaScript 객체들의 집합 
+- JavaScript에서 웹 페이지의 콘텐츠로 접근하는 통로
+- JavaScript를 통해 HTML과 CSS를 조작할 수 있음
+## 문서 오브젝트
+- 브라우저가 웹 페이지를 띄울 때 HTML과 CSS 정보를 받아들인 후 요소와 스타일을 기반을 JavaScript 객체를 생성함
+- ex) HTML파일에 있는 `<body>`, `<h1>`, `<ul>`과 같은 요소들에 대한 고유한 JavaScript 객체가 생성됨
+- 생성된 객체들은 각각의 객체들간의 부모자식 연결 관계를 가짐 
+- Document 객체는 부모자식 관계의 최상위 객체
+## getElementById
+- String과 일치하는 Id를 가진 요소를 찾으면 해당 값을, 없으면 undefined를 반환함
+- HTML, CSS요소를 직접 선택하는 것이 아닌, JavaScript를 통해 만들어진 DOM의 객체를 선택하는 것!!
+## getElementsByTagName & className
+- 한 번에 한 개 이상을 선택하기 때문에 Element's'
+### getElementsByTagName
+- 태그 이름을 전달하면 동일한 태그의 객체들을 원소로 가진 HTMLCollection을 반환 함
+    - 반복 가능하지만 배열은 아님
+### getElementsByClassName
+- 전달된 클래스와 동일한 클래스의 객체들을 원소로 가진 HTMLCollection을 반환함
+## querySelector & querySelectorAll
+- 하나의 메서드를 사용해서 ID, 클래스, 태그, css 스타일, 속성등을 통해 객체들을 선택할 수 있음
+- `querySelector`는 일치하는 첫 번째 요소를 반환
+```js
+// p태그를 선택
+document.querySelector('p')
+// Id가 banner를 선택
+document.querySelector('#banner')
+// Class가 square를 선택
+document.querySelector('.square')
+```
+- `querySelectorAll`은 일치하는 첫 번째 요소가 아닌 모든 요소를 반환함
+## innerHTML, textContent & innerText
+### innerHTML
+- 요소에 포함된 마크업의 전체 내용을 출력함
+- 내용과 태그가 같이 나옴
+### textContent
+- `innerText`와 비슷한 역할을 함
+- 요소 안에 있는 모든 요소가 나타남
+### innerText
+- 여는 태그와 닫는 태그 사이에 있는 내용을 텍스트로 보여줌
+- ex) `<body>`를 선택하고 `innerText`를 했을 때는 `<body>`안에 있는 다른 태그의 내용은 보이지 않지만, `textContent`는 다 보 임
+## 속성 (Attributes)
+- 요소의 특성에 직접 엑세스 하는 경우에는 JavaScript 객체를 가져 옴
+### getAttribute()
+- HTML 자체에서 속성을 직접 찾아옴
+### setAttribute()
+- 첫 번쨰 인수에 속성, 두 번째 인수에 새로운 값을 입력하여 속성 값을 수정함
+## 스타일 변경하기
+- style 객체에 속성들은 인라인 스타일들만 적용됨, 스타일시트의 속성들은 적용되지 않음 
+## ClassList
+-  JavsScript를 통해 직접 Style을 바꾸는 것은 인라인 스타일에만 적용되기 때문에 자주 사용하지 않음
+- stylesheet에서 클래스마다 style을 지정하고, 객체에 클래스를 추가하는 방식으로 style을 변경할 수 있음
+    - 적용할 클래스가 많아지면 이 방법 또한 번거로워 짐
+- `classList`
+    - 요소의 클래스를 제어, 검색 조작 함
+    - `.add`를 통해 클래스를 추가
+    - `.remove`를 통해 클래스를 제거
+    - `.toggle`를 통해 적용된 클래스를 껐다 켰다 할 수 있음
+## 계층 이동
+- 주어진 요소에서 부모, 자식, 형제 요소에 접근
+### parentElement
+- 부모 요소에 접근함
+### children
+- 자식요소를 HTMLCollection으로 반환
+### nextElementSibling
+- 다음 형제 요소를 반환
+### previousElementSibling
+- 이전 형제 요소를 반환
+## Append & AppendChild
+### createElement
+- 새로운 요소를 만듦
+### appendChild
+- 해당 요소에 자식 요소를 추가함
+### append
+- 한 개 이상의 요소를 추가할 수 있음
+- 요소 뿐 만 아니라 텍스트, 이미지 또한 추가할 수 있음
+## removeChild & remove
