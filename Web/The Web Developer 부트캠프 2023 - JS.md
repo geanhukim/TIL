@@ -91,7 +91,19 @@
     - [배열 분해](#배열-분해)
     - [객체 분해](#객체-분해)
     - [매개 변수 분해](#매개변수-분해)
-- 섹션 24: DOM이란?
+- [섹션 24: DOM이란?](#섹션-24-dom이란)
+    - [DOM 개요](#dom-개요)
+    - [문서 오브젝트](#문서-오브젝트)
+    - [getElementById](#getelementbyid)
+    - [getElementsbyTagName & className](#getelementsbytagname--classname)
+    - [querySelector & querySeletroAll](#queryselector--queryselectorall)
+    - [innerHTML, textContent & innerText](#innerhtml-textcontent--innertext)
+    - [속성 (Attribute)](#속성-attributes)
+    - [스타일 변경하기](#스타일-변경하기)
+    - [ClassList](#classlist)
+    - [계층 이동](#계층-이동)
+    - [Append & AppendChild](#append--appendchild)
+    - [removeChild & remove](#removechild--remove)
 - 섹션 25: 잃어버린 퍼즐 한 조각: DOM 이벤트
 - 섹션 27: 비동기식 JavaScript
 - 섹션 28: AJAX와 API
@@ -819,7 +831,7 @@ const fullName = ({first, last}) => {
 }
 fullName(runner); // "Eliud Kipchoge"
 ```
-# 섹선 24: DOM이란?
+# 섹션 24: DOM이란?
 ## DOM 개요
 - 문서 객체 모델
 - 웹 페이지를 구성하는 JavaScript 객체들의 집합 
@@ -897,4 +909,18 @@ document.querySelector('.square')
 ### append
 - 한 개 이상의 요소를 추가할 수 있음
 - 요소 뿐 만 아니라 텍스트, 이미지 또한 추가할 수 있음
+### prepend
+- 어떤 항목을 요소의 첫 번쨰 자녀로 삽입
+### insertAdjacentElement
+- 특정 위치에 항목을 요소로 삽입
 ## removeChild & remove
+### removeChild
+- 요소에서 자식을 제거
+- 제거하려는 요소의 부모에 메서드를 호출해야 함
+### remove
+- 제거하려는 그 요소에 메서드를 호출
+# 섹션 25: 잃어버린 퍼즐 한 조각: DOM 이벤트
+## 이벤트 개요
+- 이벤트 : 사용자들이 하는 행동에 반응하는 작업
+- 클릭, 드래그, 스크롤, 키보드 입력 등 다양한 이벤트가 있음
+## 인라인 이벤트
