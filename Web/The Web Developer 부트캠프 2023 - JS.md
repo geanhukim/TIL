@@ -104,7 +104,13 @@
     - [계층 이동](#계층-이동)
     - [Append & AppendChild](#append--appendchild)
     - [removeChild & remove](#removechild--remove)
-- 섹션 25: 잃어버린 퍼즐 한 조각: DOM 이벤트
+- [섹션 25: 잃어버린 퍼즐 한 조각: DOM 이벤트](#섹션-25-잃어버린-퍼즐-한-조각-dom-이벤트)
+    - [이벤트 개요](#이벤트-개요)
+    - [인라인 이벤트](#인라인-이벤트)
+    - [온클릭(OnClick) 속성](#온클릭onclick-속성)
+    - [addEventListener](#addeventlistener)
+    - [이벤트와 'this'라는 키워드](#이벤트와-this라는-키워드)
+    - [키보드 이벤트와 이벤트 객체](#키보드-이벤트와-이벤트-객체)
 - 섹션 27: 비동기식 JavaScript
 - 섹션 28: AJAX와 API
 - 섹션 29: 프로토타입, 클래스, 그리고 OOP
@@ -924,3 +930,64 @@ document.querySelector('.square')
 - 이벤트 : 사용자들이 하는 행동에 반응하는 작업
 - 클릭, 드래그, 스크롤, 키보드 입력 등 다양한 이벤트가 있음
 ## 인라인 이벤트
+- html 태그내에 직접 이벤트를 작성
+```html
+<button onclick='alert("hi")' id='hi'></button>
+```
+## 온클릭(OnClick) 속성
+- js 파일로 이벤트를 설정하는 방법
+```js
+const btn = document.querySelector('#hi')
+
+btn.onclick = function() {
+    console.log('hi')
+}
+```
+- 이벤트에서 함수를 호출하여 실행하는 것이 아닌, 이벤트로 전달만 하는 것
+```js
+function scream() {
+    console.log('ahahahah')
+}
+
+bth.onclick = scream
+// not scream()
+``` 
+## addEventListener
+-  이벤트를 추가할 때 가장 많이 쓰는 방법
+- `addEventListener('이벤트', 콜백 함수)`
+```js
+const btn = document.querySelector('#hi')
+
+btn.addEventListener('click', () => {
+    alert('you clicked me')
+})
+```
+- 다른 콜백 함수를 여러 줄에 써도 마지막으로 작성된 것 만 실행되지 않고 모두 실행됨
+## 이벤트와 'this'라는 키워드
+- `addEventListener`의 콜백 함수가 `this`를 가지고 있으면, `addEventListener`가 적용되는 요소에 콜백 함수가 실행됨
+```js
+function colorize() {
+    this.style.backgorundColor = 'olive';
+    this.style.color = 'white';
+}
+
+const btns = document.quersySelector('button')
+for (let btn of btns) {
+    btn.addEventListener('click', colorize)
+}
+
+const h1s = document.quersySelector('h1')
+for (let h1 of h1s) {
+    h1.addEventListener('click', colorize)
+}
+```
+## 키보드 이벤트와 이벤트 객체
+### 이벤트 객체
+- `addEventListener`의 콜백 함수에 자동으로 전달됨
+- 이벤트와 관련된 정보를 가지고 있음
+### 키보드 이벤트
+- `key`
+    - 입력된 값
+- `code`
+    - 실제 키보드에서의 물리적인 위치
+## 폼 이벤트 및 preventDefault
