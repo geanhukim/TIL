@@ -81,7 +81,7 @@
     - [Filter 메서드](#filter-메서드)
     - [Some과 every 메서드](#some과-every-메서드)
     - [악명 높은 Reduce 메서드](#악명-높은-reduce-메서드)
-    - [화살표 함수와 'this'](#화살표-함수와-this)
+    - [화살표 함수와 'this'](#화살표-함수와-this) 
 - [섹션 23: JavaScript의 최신 기능들](#섹션-23-javascript의-최신-기능들)
     - [기본 매개 변수](#기본-매개-변수)
     - [#함수 호출 시의 스프레드 구문](#함수-호출-시의-스프레드-구문)
@@ -883,7 +883,7 @@ document.querySelector('.square')
 - 요소 안에 있는 모든 요소가 나타남
 ### innerText
 - 여는 태그와 닫는 태그 사이에 있는 내용을 텍스트로 보여줌
-- ex) `<body>`를 선택하고 `innerText`를 했을 때는 `<body>`안에 있는 다른 태그의 내용은 보이지 않지만, `textContent`는 다 보 임
+- ex) `<body>`를 선택하고 `innerText`를 했을 때는 `<body>`안에 있는 다른 태그의 내용은 보이지 않지만, `textContent`는 다 보임
 ## 속성 (Attributes)
 - 요소의 특성에 직접 엑세스 하는 경우에는 JavaScript 객체를 가져 옴
 ### getAttribute()
@@ -1011,3 +1011,8 @@ for (let h1 of h1s) {
 - EventListener로 추가된 시점에 페이지에 없었던 요소를 다루는 방법
 - 부모 요소에 EventListener를 추가
 - `event.target`을 통해 정확히 이벤트를 실행시키는 요소를 정할 수 있음
+# 섹션 27: 비동기식 JavaScript
+## 콜 스택(Call Stack)
+- Js 해석기가 사용하는 메커니즘
+- 여러 함수를 호출하는 스크립트에서 해당 위치를 추적
+- 
