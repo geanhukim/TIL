@@ -1015,4 +1015,75 @@ for (let h1 of h1s) {
 ## 콜 스택(Call Stack)
 - Js 해석기가 사용하는 메커니즘
 - 여러 함수를 호출하는 스크립트에서 해당 위치를 추적
-- 
+- Stack
+    - 자료구조
+    - LIFO(Last In First Out)
+- 스크립트가 함수를 호출하면 해석기는 함수를 콜 스택에 추가
+- 함수에 의해 다른 함수가 호출되면 이 또한 콜 스택에 추가
+## WebAPI와 단일 스레드
+### 단일 스레드
+- 한 번에 한 줄의 코드를 실행함
+- 만약 Js로만 파일이 실행된다면 `setTimeOut`뒤에 오는 코드들은 딜레이 된 후에 실행되야 함
+    - 실제로는 그렇지 않음
+### WebAPI
+- 실제로는 Js가 브라우저에 특정한 작업을 처리하도록 넘김
+    - ex) `setTimeout`, making request
+- Js 콜 스택이 WebAPI 함수를 인식하고 브라우저에 전달 
+## Callback이라는 지옥
+- 함수의 매개 변수로 넘겨지는 콜백 함수가 반복되어 코드의 들여쓰기 수준이 감당하기 힘들 정도로 깊어지는 현상
+## Promises를 사용한 fakeRequest
+### Promises
+- 객체
+- 최종 값이나 작동 여부에 대한 약속
+- 세 가지 상태를 가짐
+    - pending : 무언가를 기다리는 상태
+    - resolved : 성공
+    - rejected : 실패
+- resolve 또는 rejected일 때 특정 코드를 실행 
+    - resolve 일 때는 `.then`에 있는 콜백을, rejected 일 때는 ``.catch`에 있는 콜백을 실행
+```js
+fakeRequesetPromise()
+    .then(() => {
+        console.log("IT WORKED")
+        fakeRequesetPromise()
+            .then(
+                fakeRequesetPromise()
+                    .then()
+                    .catch()
+        )
+            .catch()
+    })
+    .catch(() => {
+        console.log("ERROR")
+    })
+```
+## Promises의 마법
+`.then`에서 Promise 객체를 다시 실행하는 것이 아닌, Promise 객체를 return 할 수 있음
+- 코드를 가독성 좋게 만들 수 있음
+```js
+fakeRequestPromise()
+    .then(
+        return fakeRequestPromise()
+    )
+    .then(
+        return fakeRequestPromise()
+    )
+    .then(
+        return fakeRequestPromise()
+
+    )
+    .catch()
+```
+- 어느 지점에서든 `rejected`가 발생하면 `.catch`로 넘어감
+## 비동기 키워드
+### ASYNC
+- 함수를 비동기 함수로 선언
+- 함수 앞에 `async`를 붙이면 그 함수는 비동기 함수가 되여 자동으로 Promise를 반환
+- 함수가 값을 반환하면 resolved 상태가 됨
+- 함수에 오류가 발생하면 rejected 상태가 됨
+    - `throw`를 통해 할 수 있음
+## 대기 키워드
+### AWAIT
+- 비동기 함수 내에서 await가 붙은 함수가 있으면 그 Promise가 결과를 낼 때까지는 다른 것 들을 실행하지 않음
+## 비동기 함수의 오류 처리하기
+- try catch문을 사용함
