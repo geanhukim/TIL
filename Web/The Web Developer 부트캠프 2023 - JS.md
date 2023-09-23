@@ -115,8 +115,25 @@
     - [입력과 변경 이벤트](#입력과-변경-이벤트)
     - [이벤트 버블링](#이벤트-버블링)
     - [이벤트 위임](#이벤트-위임)
-- 섹션 27: 비동기식 JavaScript
-- 섹션 28: AJAX와 API
+- [섹션 27: 비동기식 JavaScript](#섹션-27-비동기식-javascript)
+    - [콜 스택 (Call Stack)](#콜-스택call-stack)
+    - [WebAPI와 단일 스레드](#webapi와-단일-스레드)
+    - [Callback이라는 지옥](#callback이라는-지옥)
+    - [Promises를 사용한 fakeRequest](#promises를-사용한-fakerequest)
+    - [비동기 키워드](#비동기-키워드)
+    - [대기 키워드](#대기-키워드)
+    - [비동기 함수의 오류 처리하기](#비동기-함수의-오류-처리하기)
+- [섹션 28: AJAX와 API](#섹션-28-ajax와-api)
+    - [AJAX 개요](#ajax-개요)
+    - [APIs 개요](#apis-개요)
+    - [JSON이란?](#json이란)
+    - [HTTP Verbs](#http)
+    - [HTTP Status Codes](#http-status-code)
+    - [Understanding Query Strings](#understanding-query-strings)
+    - [HTTP Headers](#http-headers)
+    - [Using The Fetch API](#using-the-fetch-api)
+    - [Introducing Axios](#introducing-axios)
+    - [Axios로 헤더 세팅하기](#axios로-헤더-세팅하기)
 - 섹션 29: 프로토타입, 클래스, 그리고 OOP
 # 섹션 14: JavaScript 기초!
 ## JavaScript가 놀라운 이유
@@ -1087,3 +1104,52 @@ fakeRequestPromise()
 - 비동기 함수 내에서 await가 붙은 함수가 있으면 그 Promise가 결과를 낼 때까지는 다른 것 들을 실행하지 않음
 ## 비동기 함수의 오류 처리하기
 - try catch문을 사용함
+# 섹션 28: AJAX와 API
+## AJAX 개요
+- Asynchronous JavaScript And XML
+- 요청으로 웹페이지 파일(html, css, js)를 받는 것이 아닌 데이터를 얻는 방식
+## APIs 개요
+- Application Programming Interface
+- 컴퓨터가 여러 소프트웨어와 상호 작용, 소통하는 모든 인터페이스를 의미
+### WebAPI
+- 웹, HTTP를 기반으로 하는 인터페이스
+- 특정 엔드포인트를 제공하고, 그 엔드포인트는 사용된 코드에 정보로 응답하거나 다른 소프트웨어에 정보로 응답함
+## JSON이란?
+- JavaScript Object Notation
+- 데이터나 정보를 전송하는 포맷
+- 키-값 쌍을 갖음
+- 모든 키는 큰따옴표를 사용함
+- object, string, array 등 undefined를 제외한 Js의 type을 값으로 가짐
+- `JSON.parse`를 사용하여 문자열로 받은 JSON 데이터를 Js 객체로 변환할 수 있음
+- `JSON.stringify`를 사용하여 Js 객체를 JSON 데이터로 사용하기 위해 문자열로 변환할 수 있음
+## HTTP Verbs
+- GET, POST, DELETE와 같이 HTTP 요청을 보낼 떄 사용됨
+- GET : 정보를 가져올 때 사용
+- POST : 데이터를 보낼 때 사용
+## HTTP Status Code
+- HTTP 응답에서 볼 수 있음
+- 2xx : 성공 응답
+- 3xx : 리디렉션 메세지
+- 4xx : 클라이언트 사이드 오류
+- 5xx : 서버 사이드 오류
+## Understanding Query Strings
+- url에 추가 정보를 넣기 위해 사용
+- `url?sort=desc&color=blue`
+- 키-값 쌍으로 구성
+- &으로 구별
+## HTTP Headers
+- 요청과 함께 정보를 전달하는 부수적인 방식
+- 키-값 쌍으로 구성
+## Using the Fetch API
+- `fetch(url)`
+- 자동으로 해당 url에 GET 요청을 전송함
+- Promise를 반환
+    - `.then, .cathc`를 사용해야 함
+- fetch가 헤더를 수신하면 Promise가 바로 resolved 처리됨
+- `json()` 메서드를 사용하여 데이터를 얻을 수 있음
+## Introducing Axios
+- `axios.get(url)`
+- `json()` 메서드로 파싱할 필요없이 바로 데이터를 반환함
+## Axios로 헤더 세팅하기
+- `axios.get`에 헤더 내용을 인수로 보낼 수 있음
+- `{headers: {헤더 내용}}`
