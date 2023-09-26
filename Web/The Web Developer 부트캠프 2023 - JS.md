@@ -134,7 +134,12 @@
     - [Using The Fetch API](#using-the-fetch-api)
     - [Introducing Axios](#introducing-axios)
     - [Axios로 헤더 세팅하기](#axios로-헤더-세팅하기)
-- 섹션 29: 프로토타입, 클래스, 그리고 OOP
+- [섹션 29: 프로토타입, 클래스, 그리고 OOP](#섹션-29-프로토타입-클래스-그리고-oop)
+    - [프로토타입이란?](#프로토타입이란)
+    - [팩토리 함수](#팩토리-함수)
+    - [생성자 함수](#생성자-함수)
+    - [JavaScript 클래스](#javascript-클래스)
+    - [확장 및 슈퍼 키워드](#확장-및-슈퍼-키워드)
 # 섹션 14: JavaScript 기초!
 ## JavaScript가 놀라운 이유
 - 웹 페이지의 동작을 담당
@@ -1153,3 +1158,125 @@ fakeRequestPromise()
 ## Axios로 헤더 세팅하기
 - `axios.get`에 헤더 내용을 인수로 보낼 수 있음
 - `{headers: {헤더 내용}}`
+# 섹션 29: 프로토타입, 클래스, 그리고 OOP
+## 프로토타입이란?
+- Js 객체가 서로 기능을 상속하는 방식의 메커니즘 
+- Array, String과 같은 객체들은 다양한 메서드를 가지고 있음 ex) length, push, pop...
+- 이런 메서드들은 각각의 array, string에 저장되는 것이 아님
+- 이 메서드들은 `prototype`객체에서 정의됨
+- 각각의 객체들은 `__proto__`특성을 통해 `prototype`을 참조하여 메서드를 사용함
+## 팩토리 함수
+- 함수 내부에서 객체를 생성해 반환하는 함수
+```js
+function makeColor(r, g, b) {
+  const color = {};
+  color.r = r;
+  color.g = g;
+  color.b = b;
+  color.rgb = function () {
+    const { r, g, b } = this;
+    return `rgb(${r}, ${g}, ${b})`;
+  }  
+  return color;
+}
+```
+## 생성자 함수
+### 팩토리 함수의 단점
+- 객체가 새로 만들어 질 때 마다 함수가 실행되어 각각의 객체에 복사됨
+- 각각의 객체가 고유한 함수의 복사본을 가짐
+### 생성자 함수
+- 함수 내에서 객채를 만들어서 반환하는 것이 아닌, 함수 자체를 호출하여 객체를 만듦
+```js
+function Color(r, g, b) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+}
+
+Color.prototype.rgb = function () {
+    const { r, g, b } = this;
+    return `rgb(${r}, ${g}, ${b})`;
+  }  
+
+new Color(255, 23, 251);
+```
+- `new`로 호출을 해야만 새로운 객체가 만들어지고, `this` 키워드가 새로 만들어진 객체를 참조함
+    - 그렇지 않으면 `window`를 참조
+- 메서드를 추가할 때는 생성자 함수 내에서 하는 것이 아닌, 밖에서 `prototype`을 이용하여 추가해야 함
+    - 그렇지 않으면 메서드가 프로토타입에 정의되지 않고 개별 객체로 정의됨
+## JavaScript 클래스
+- 생성자 함수는 메서드를 함수 밖에서 정의하므로 불편함
+```js
+class Color {
+    constructor() {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+    innerRGB() {
+        const { r, g, b } = this;
+
+    }
+    rgb() {
+        return `rgb(${this.innerRGB()})`
+    }
+    rgba(a=1.0) {
+        return `rgba(${this.rgb()}, ${a})`
+    }
+}
+```
+- `clss` 키워드로 시작함
+- `constructor`
+    - 객체가 만들어질 떄 자동으로 실행됨
+    - 만들어진 객체에 값을 전달함
+- class 안에 있는 메서드를 `this`를 통해 class의 다른 메서드에서도 사용 가능
+## 확장 및 슈퍼 키워드
+### extends
+- 클래스의 `constructor`와 메서드를 상속받는 받음
+```js
+class Pet {
+    constructor (name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    eat() {
+        return `${this.name} is eating!`;
+    }
+}
+
+class Cat extends Pet {
+    meow() {
+        return 'MEOWWW';
+    }
+}
+
+class Dog extends Pet {
+    bark() {
+        return 'WOOLF';
+    }
+}
+```
+- Cat, Dog 클래스에는 constructor와 eat 메서드가 없지만 `extends` 키워드를 통해 Pet 클래스에서 상속받아 사용할 수 있음
+### super
+```js
+class Pet {
+    constructor (name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    eat() {
+        return `${this.name} is eating!`;
+    }
+}
+
+class Cat extends Pet {
+    constructor (name, age, livesLeft = 9) {
+        super(name, age);
+        this.livesLeft = livesLeft
+    }
+    meow() {
+        return 'MEOWWW';
+    }
+}
+```
+- `super`키워드를 통해 확장한 클래스(Pet)을 참조함
