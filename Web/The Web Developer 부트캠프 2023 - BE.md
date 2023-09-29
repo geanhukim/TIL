@@ -132,3 +132,30 @@ math.add(2,3);
 ## 한 프로젝트에 대한 모든 종속 요소 추가하기
 - 다른 사람이 만든 코드를 다운 받을 경우, `node_modules`을 공유하는 경우는 잘 없음
 - `npm install`을 실행하면 공유받은 파일의 `package.json`의 `dependencies`를 확인 후, 없는 패키지와 의존성들을 모두 설치함
+# 섹션 33: Express로 서버 제작하기
+## 우리의 첫 번쨰 Express 앱
+```js
+const express = require("express");
+const app = express();
+
+app.use(() => {
+	console.log("i got a new request")
+})
+
+app.listen(3000, () => {
+	console.log('hi hello');
+})
+```
+- `listen()`
+    - 앱이 요청을 받거나 인수로 받은 포트로 요청을 받으면 콜백함수를 실행함
+- `use()`
+    - 요청이 들어오면 콜백이 실행됨
+    - 요청이 어디서 오든 상관 없음
+## 요청 및 응답 객체
+- req, res
+    - express에서 만드는 객체들
+    - HTTP 요청은 Js객체가 아니기 때문에 express가 데이터를 파싱해서 전달할 객체로 변환 함
+- res.send()
+    - HTTP 응답을 생성하고 보냄
+## Express 라우팅 기초
+- 
