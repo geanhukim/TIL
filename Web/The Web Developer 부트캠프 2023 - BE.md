@@ -22,6 +22,24 @@
     - [글로벌 패키지 추가하기](#글로벌-패키치-추가하기)
     - [Package.json의 중요성](#packagejson의-중요성)
     - [한 프로젝트에 대한 모든 종속 요소 설치하기](#한-프로젝트에-대한-모든-종속-요소-추가하기)
+- [섹션 33: Express로 서버 제작하기](#섹션-33-express로-서버-제작하기)
+    - [우리의 첫 번째 Express 앱](#우리의-첫-번쨰-express-앱)
+    - [요청 및 응답 객체](#요청-및-응답-객체)
+    - [Express 라우팅 기초](#express-라우팅-기초)
+    - [Express 경로 매개 변수](#express-경로-매개-변수)
+    - [쿼리 문자열 작업하기](#쿼리-문자열-작업하기)
+    - [Nodemon을 사용한 자동 재시작](#nodemon을-사용한-자동-재시작)
+- [섹션 34: 템플레이팅으로 동적 HTML 구성하기]
+    - [템플레이팅이란?](#템플레이팅이란?)
+    - [EJS용 Express 구성하기](#esj용-express-구성하기)
+    - [뷰 디렉토리 설정하기](#뷰-디렉터리-설정하기)
+    - [EJS 보간 구문](#ejs-보간-구문)
+    - [템플릿에 데이터 전달하기](#템플릿에-데이터-전달하기)
+    - [EJS의 조건문](#ejs의-조건문)
+    - [EJS의 루프]
+    - [Express의 정적 Assets 사용하기]
+    - [부트스트랩과 Express]
+    - [EJS와 파일 분할]
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
 - 터미널
@@ -157,5 +175,82 @@ app.listen(3000, () => {
     - HTTP 요청은 Js객체가 아니기 때문에 express가 데이터를 파싱해서 전달할 객체로 변환 함
 - res.send()
     - HTTP 응답을 생성하고 보냄
+    - 어떤 종류의 요청이라도 반응함
 ## Express 라우팅 기초
+### 라우팅
+- 요청과 요청된 경로를 가져와서 응답을 갖는 어떠한 코드에 맞추는 것
+    - ex) /help => "고객센터", /home => "홈페이지"
+### `app.get(요청 경로, 콜백)`
+- 요청 경로에 맞는 HTTP 요청이 들어왔을 때 콜백함수를 실행함
+## Express 경로 매개 변수
+- 라우트를 패턴화 할 때 사용
+    - ex) reddit : r/chickens, r/soccer ...
+- 경로 문자열에 `:`을 사용하여 변수로 만듦
+```js
+app.get('/r/:subreddit', ())
+```
+- `req.params`를 통해 변수에 접근할 수 있음
+```js
+// r/cats 요청을 했을 때
+{ subbreddit : 'cats'}
+```
+## 쿼리 문자열 작업하기
+- `req.query`를 통해 접근할 수 있음
+## Nodemon을 사용한 자동 재시작
+- nodemon 라이브러리를 사용하여 js파일에 변경사항이 있을 때 서버를 자동으로 재시작 하게 만들 수 있음
+# 섹션 34: 템플레이팅으로 동적 HTML 구성하기
+## 템플레이팅이란?
+- 정보와 로직을 넣어서 동적으로 HTML을 사용하는 것
+## ESJ용 Express 구성하기
+- `app.set('view engine', 'ejs')`
+    - 앱에 EJS를 사용한다고 알림
+- npma을 통해 EJS를 설치
+- Express views 디렉터리에 템플릿이 있다고 디폴트로 설정함
+    - view파일 안에 ejs파일을 만들어 템플릿 설정
+- `res.render`
+    - view를 렌더링하고 렌더링 된 HTMl 문자열을 클라이언트에 보냄
+## 뷰 디렉터리 설정하기
+- view 디렉터리의 바로 위의 파일이 아닌 곳에서 서버를 실행하면 오류가 발생
+```JS
+const path = require('path');
+
+app.set('views', path.join(__dirname, '/views'))
+
+```
+- js파일이 있는 현재 디렉터리를 가져와서 거기에 도달하기 위한 전체 디렉터리에 /view를 붙여줌
+## EJS 보간 구문
+### <%= %>
+- 태그 안에 내용들은 js로 취급함
+## 템플릿에 데이터 전달하기
+- `res.render`에서 두 번째 인수로 키-값 쌍 객체를 보낼 수 있음
+- js파일에서 정의한 값을 ejs파일의 키로 보낼 수 있음
+```js
+// index.js
+app.get('/rand', (req,res) => {
+    const num = Math.floor(Math.random() * 10) + 1;
+    res.render('random', {num : num})
+})
+```
+```html
+// random.ejs
+<h1>Random number is <%= num %></h1>
+```
+## EJS의 조건문
+### <% %>
+- 태그 안에 내용들을 js로 임베드 하되 템플릿에 추가하지 않음
 - 
+```html
+<h1>
+    Your random number is: <%= num %>
+</h1>
+<% if(num % 2 === 0) { %>
+<h2>
+    Tha is an even number!
+</h2>
+<% } else { %>
+<h2>
+    Tha is an odd number!
+</h2>
+<% } %>
+``` 
+- 기존 js에서 if, else 구문을 `<% %>`로 감싸면 됨
