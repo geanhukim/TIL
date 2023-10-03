@@ -29,17 +29,29 @@
     - [Express 경로 매개 변수](#express-경로-매개-변수)
     - [쿼리 문자열 작업하기](#쿼리-문자열-작업하기)
     - [Nodemon을 사용한 자동 재시작](#nodemon을-사용한-자동-재시작)
-- [섹션 34: 템플레이팅으로 동적 HTML 구성하기]
+- [섹션 34: 템플레이팅으로 동적 HTML 구성하기](#섹션-34-템플레이팅으로-동적-html-구성하기)
     - [템플레이팅이란?](#템플레이팅이란?)
     - [EJS용 Express 구성하기](#esj용-express-구성하기)
     - [뷰 디렉토리 설정하기](#뷰-디렉터리-설정하기)
     - [EJS 보간 구문](#ejs-보간-구문)
     - [템플릿에 데이터 전달하기](#템플릿에-데이터-전달하기)
     - [EJS의 조건문](#ejs의-조건문)
-    - [EJS의 루프]
-    - [Express의 정적 Assets 사용하기]
-    - [부트스트랩과 Express]
-    - [EJS와 파일 분할]
+    - [EJS의 루프](#ejs의-조건문)
+    - [Express의 정적 Assets 사용하기](#express의-정적-assets-사용하기)
+    - [EJS와 파일 분할](#ejs와-파일-분할)
+- [섹션 35: RESTful라우트 정의하기]
+    - [Get 요청과 Post 요청]
+    - [Express Post 경로 요청하기]
+    - [요청 구문 분석하기]
+    - [RESTful 주석 개요]
+    - [RESTful 주석 Index]
+    - [RESTful 주석 New]
+    - [Express 방향 수정]
+    - [RESTful 주석 Show]
+    - [UUID 패키지]
+    - [RESTful 주석 Update]
+    - [Express 메서드 재정의]
+    - [RESTful 주석 Delete]
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
 - 터미널
@@ -238,7 +250,6 @@ app.get('/rand', (req,res) => {
 ## EJS의 조건문
 ### <% %>
 - 태그 안에 내용들을 js로 임베드 하되 템플릿에 추가하지 않음
-- 
 ```html
 <h1>
     Your random number is: <%= num %>
@@ -254,3 +265,51 @@ app.get('/rand', (req,res) => {
 <% } %>
 ``` 
 - 기존 js에서 if, else 구문을 `<% %>`로 감싸면 됨
+## EJS의 루프
+```html
+<ul>
+    <% for(let cat of cats) { %>
+    <li><%= cat %></li>
+    <% } %>
+</ul>
+```
+- 조건문과 마찬가지로 js 내용을 `<% %>`로 묶음
+## Express의 정적 Assets 사용하기
+- css, js, img 등의 파일을 클라이언트 측에 전달할 때 사용
+- `app.use(express.static('public'))`
+- 파일들이 들어있는 public 디렉터리를 전달
+- `path.join(__dirname, 'public')`
+    - 다른 디렉터리에서 서버를 실행할 때의 오류를 방지
+## EJS와 파일 분할
+- `<%- include(디렉터리) %>`
+- 이스케이프가 되지 않은 값을 템플릿에 출력
+    - 이스케이프 : 콘텐츠를 문자열로 취급할 때 
+- ex) html의 `<head>`를 ejs파일로 따로 만든 후 각각의 라우팅 `<head>`를 위의 코드로 대체할 수 있음
+# 섹션 35: RESTful라우트 정의하기
+## Get 요청과 Post 요청
+### get
+- 정보를 가져올 때 사용
+- 요청을 보낼 때 같이 따라오는 데이터는 쿼리 문자열에 담김
+### post
+- 정보를 올리거나 보낼 때 사용
+- 같이 따라오는 데이터는 쿼리 문자열이 아닌 요청의 body에 포함됨
+## Express Post 경로 정의하기
+- `app.post`를 통해 POST 요청을 받았을 때 행동을 정의할 수 있음
+## 요청 구문 분석하기
+- `req.body`
+    - request body에 제출된 데이터의 키-값 쌍을 포함
+    - 기본값 : undefined
+    - body 분석 미들웨어 사용 시 추가됨
+        - ex) express.json(), express.urlencoded()...
+## REST 개요
+- Representational State Transfer
+- 클라이언트와 서버가 어떻게 서로 소통해야 하는가에 대한 가이드라인, 개념, 원리
+- RESTful : REST 규칙에 따르는 시스템
+## Express 방향 수정
+- `res.redirect()`
+- 지정한 url로 리다이렉트 함
+- 302(defalut) 상태코드를 받으면 초기 응답에서 전송된 위치를 기반으로 이어서 진행함
+- HTTP 응답 header에 지정한 url를 포함하여 이후 그 url로 GET 요청을 함
+## UUID 패키지
+- 고유 식별자를 생성해주는 패키지
+## 
