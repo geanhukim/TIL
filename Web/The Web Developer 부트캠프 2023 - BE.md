@@ -39,7 +39,7 @@
     - [EJS의 루프](#ejs의-조건문)
     - [Express의 정적 Assets 사용하기](#express의-정적-assets-사용하기)
     - [EJS와 파일 분할](#ejs와-파일-분할)
-- [섹션 35: RESTful라우트 정의하기]
+- [섹션 35: RESTful라우트 정의하기](#섹션-35-restful라우트-정의하기)
     - [Get 요청과 Post 요청]
     - [Express Post 경로 요청하기]
     - [요청 구문 분석하기]
@@ -52,6 +52,17 @@
     - [RESTful 주석 Update]
     - [Express 메서드 재정의]
     - [RESTful 주석 Delete]
+- [섹션 36: 우리의 첫 번째 데이터베이스: MongoDB]
+    - [데이터베이스 개요]
+    - [SQL과 NoSQL 데이터베이스]
+    - [Mongo를 배워야 하는 이유]
+    - [Mongo Shell]
+    - [BSON이란?]
+    - [Mongo 데이터베이스에 삽입하기]
+    - [Mongo 데이터베이스에서 찾기]
+    - [Mongo 데이터베이스 업데이트하기]
+    - [Mongo 데이터베이스에서 삭제]
+    - [기타 Mongo 연산자]
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
 - 터미널
@@ -305,11 +316,102 @@ app.get('/rand', (req,res) => {
 - Representational State Transfer
 - 클라이언트와 서버가 어떻게 서로 소통해야 하는가에 대한 가이드라인, 개념, 원리
 - RESTful : REST 규칙에 따르는 시스템
+- 리소스 : 하나의 엔티티
+    - ex) 트윗, 사용자, 이미지...
+- 인터페이스 일관성 : 다른 HTTP 동사를 일관된 URL 패턴과 매치햐여 구성하는 것
+## RESTful 주석 개요
+- 댓글을 CRUD하는 api를 만듦
+- HTTP 동사를 기본 URL과 필요시 ID도 매치
+```
+GET /comments - 모든 댓글 출력
+POST /comments - 새 댓글 작성
+GET /comments/:id - 특정 댓글 출력
+PATCH /comments/:id - 댓글 수정
+DELETE /comments/:id - 댓글 삭제
+``` 
+## RESTful 주석 New
+```js
+app.post('/comments', (req, res) => {
+	const { username, comment } = req.body;
+	comments.push({ username, comment, id: uuid() })
+	res.redirect('/comments');
+})
+```
 ## Express 방향 수정
 - `res.redirect()`
 - 지정한 url로 리다이렉트 함
 - 302(defalut) 상태코드를 받으면 초기 응답에서 전송된 위치를 기반으로 이어서 진행함
 - HTTP 응답 header에 지정한 url를 포함하여 이후 그 url로 GET 요청을 함
+## RESTful 주석 Show
+```js
+app.get('/comments/:id', (req, res) => {
+	const { id } = req.params;
+	const comment = comments.find( c => c.id === id)
+	res.render('comments/show', { comment })
+})
+```
 ## UUID 패키지
 - 고유 식별자를 생성해주는 패키지
-## 
+## RESTful 주석 Update
+```js
+app.patch('/comments/:id', (req, res) => {
+	const { id } = req.params;
+	const newCommentText = req.body.comment;
+	const foundComment = comments.find( c => c.id === id);
+	foundComment.comment = newCommentText;
+	res.redirect('/comments');
+})
+```
+- url에 입력된 id를 req.params을 통해 가져옴
+- req.body.comment에 담긴 페이로드, 즉 수정할 내용을 가져옴
+- 기존 DB에서 url에 입력된 id와 동일한 id를 가진 댓글을 찾음
+- 댓글의 내용을 페이로드의 내용으로 정의
+- index페이지로 redirect
+## Express 메서드 재정의
+- html의 form에서는 delete, patch, put 등의 메서드를 사용할 수 없음
+- mehtod-override
+    - 클라이언트가 해당 작업을 지원하지 않는 환경에서 HTTP 동사를 사용할 수 있게 해주는 패키지
+```js
+// js
+const methodOverride = require('method-override');
+
+app.use(methodOverride('_method'))
+```
+```html
+// ejs
+<form method='POST' action='/comments/<%=comment.id%>?_method=PATCH'></form>
+```
+## RESTful 주석 Delete
+```html
+// ejs
+<form method="POST" action="/comments/<%= comment.id %>?_method=DELETE">
+
+```
+# 섹션 36: 우리의 첫 번째 데이터베이스: MongoDB
+## 데이터베이스 개요
+- DB는 많은 양의 데이터를 효율적으로 저장하고 압축하여 관리하기 쉽고, 접속하기 쉽게 만들어 줌
+- DB가 제공하는 다양한 도구들을 사용하여 데이터를 쉽게 삽입, 조회, 갱신, 삭제, 정렬 등을 할 수 있음
+- 데이터의 액세스를 관리하는 보안 기능을 제공
+## SQL과 NoSQL 데이터베이스
+### SQL
+- Structured Query Language
+- 기본적인 구문을 공유하는 관계형 데이터베이스
+- ex) MySQL, Postgres, Oracle ...
+- 테이블을 만들고 개별 요소를 정의
+- 다른 테이블에 있는 그 요소들을 연결하여 서로 참조하도록 함
+### NoSQL
+- SQL의 구조화된 언어를 쓰지 않고, 많은 요소를 포괄하는 방식
+- ex) MongoDB, Redis ...
+## Mongo를 배워야 하는 이유
+- Monogo가 Node, Express를 사용할때 많이 사용됨
+- 배우기 쉬움
+- Js와 쓰기 쉬움 
+## Mongo Shell
+- Node의 RELP처럼 터미널에서 사용하는 Mongo
+- `use db명`
+    - 빈 db를 만듦  
+## BSON이란?
+- 이진법 JSON
+- JSON을 압축하여 공간을 더 적게 활용함
+## Mongo 데이터베이스에 삽입하기
+- db.collection.insert
