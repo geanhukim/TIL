@@ -40,19 +40,18 @@
     - [Express의 정적 Assets 사용하기](#express의-정적-assets-사용하기)
     - [EJS와 파일 분할](#ejs와-파일-분할)
 - [섹션 35: RESTful라우트 정의하기](#섹션-35-restful라우트-정의하기)
-    - [Get 요청과 Post 요청]
-    - [Express Post 경로 요청하기]
-    - [요청 구문 분석하기]
-    - [RESTful 주석 개요]
-    - [RESTful 주석 Index]
-    - [RESTful 주석 New]
-    - [Express 방향 수정]
-    - [RESTful 주석 Show]
-    - [UUID 패키지]
-    - [RESTful 주석 Update]
-    - [Express 메서드 재정의]
-    - [RESTful 주석 Delete]
-- [섹션 36: 우리의 첫 번째 데이터베이스: MongoDB]
+    - [Get 요청과 Post 요청](#get-요청과-post-요청)
+    - [Express Post 경로 요청하기](#express-post-경로-정의하기)
+    - [요청 구문 분석하기](#요청-구문-분석하기)
+    - [RESTful 주석 개요](#restful-주석-개요)
+    - [RESTful 주석 New](#restful-주석-new)
+    - [Express 방향 수정](#express-방향-수정)
+    - [RESTful 주석 Show](#restful-주석-show)
+    - [UUID 패키지](#uuid-패키지)
+    - [RESTful 주석 Update](#restful-주석-update)
+    - [Express 메서드 재정의](#express-메서드-재정의)
+    - [RESTful 주석 Delete](#restful-주석-delete)
+- [섹션 36: 우리의 첫 번째 데이터베이스: MongoDB](#섹션-36-우리의-첫-번째-데이터베이스-mongodb)
     - [데이터베이스 개요]
     - [SQL과 NoSQL 데이터베이스]
     - [Mongo를 배워야 하는 이유]
@@ -414,4 +413,22 @@ app.use(methodOverride('_method'))
 - 이진법 JSON
 - JSON을 압축하여 공간을 더 적게 활용함
 ## Mongo 데이터베이스에 삽입하기
-- db.collection.insert
+### db.collection.insertOne()
+- 객체 하나를 db에 삽입함
+```mongo
+db.dogs.inserOne({name: "Charlie", age: 3, breed: "corgi", catFriendly: true})
+```
+- collection을 확인하면 추가하지 않은 "_id"가 추가되어 있음
+    - objectId
+    -  Mongo에 의해 자동 생성
+    - 기본 키
+### db.collection.insert()
+- 하나의 문서나, 객체 혹은 다수의 문서를 db에 전달함
+```mongo
+db.dogs.insert([{name: "Wyatt", breed: "Golden", age: 14, catFriendly: fa
+lse},{name: "Tonya", breed: "Chihuahua", age: 17, catFriendly: true}])
+```
+### db.collection.find()
+- 컬렉션의 모든 객체들을 보여줌
+## Mongo 데이터베이스에서 찾기
+- 
