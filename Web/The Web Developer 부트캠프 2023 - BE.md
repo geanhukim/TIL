@@ -52,16 +52,32 @@
     - [Express 메서드 재정의](#express-메서드-재정의)
     - [RESTful 주석 Delete](#restful-주석-delete)
 - [섹션 36: 우리의 첫 번째 데이터베이스: MongoDB](#섹션-36-우리의-첫-번째-데이터베이스-mongodb)
-    - [데이터베이스 개요]
-    - [SQL과 NoSQL 데이터베이스]
-    - [Mongo를 배워야 하는 이유]
-    - [Mongo Shell]
-    - [BSON이란?]
-    - [Mongo 데이터베이스에 삽입하기]
-    - [Mongo 데이터베이스에서 찾기]
-    - [Mongo 데이터베이스 업데이트하기]
-    - [Mongo 데이터베이스에서 삭제]
-    - [기타 Mongo 연산자]
+    - [데이터베이스 개요](#데이터베이스-개요)
+    - [SQL과 NoSQL 데이터베이스](#sql과-nosql-데이터베이스)
+    - [Mongo를 배워야 하는 이유](#mongo를-배워야-하는-이유)
+    - [Mongo Shell](#mongo-shell)
+    - [BSON이란?](#bson이란)
+    - [Mongo 데이터베이스에 삽입하기](#mongo-데이터베이스에-삽입하기)
+    - [Mongo 데이터베이스에서 찾기](#mongo-데이터베이스에서-찾기)
+    - [Mongo 데이터베이스 업데이트하기](#mongo-데이터베이스-업데이트하기)
+    - [Mongo 데이터베이스에서 삭제](#mongo-데이터베이스에서-삭제)
+    - [기타 Mongo 연산자](#기타-mongo-연산자)
+- [섹션 37: Mongoose로 MongoDB에 접속하기]
+    - [Mongoose란?]
+    - [Mongo에 Mongoose를 연결하기]
+    - [우리의 첫 번째 Mongoose 모델]
+    - [대량 삽입하기]
+    - [Mongoose로 찾기]
+    - [Mongoose로 업데이트하기]
+    - [Mongoose로 삭제하기]
+    - [Mongoose 스키마 유효성 겁사]
+    - [추가 스키마 제약조건]
+    - [Mongoose 업데이트 유효성 검사하기]
+    - [Mongoose 유효성 검사 오류]
+    - [인스턴트 메서드]
+    - [정적 메서드 추가하기]
+    - [가상 Mongoose]
+    - [Mongoose를 미들웨어로 정의하기]
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
 - 터미널
@@ -428,7 +444,50 @@ db.dogs.inserOne({name: "Charlie", age: 3, breed: "corgi", catFriendly: true})
 db.dogs.insert([{name: "Wyatt", breed: "Golden", age: 14, catFriendly: fa
 lse},{name: "Tonya", breed: "Chihuahua", age: 17, catFriendly: true}])
 ```
-### db.collection.find()
-- 컬렉션의 모든 객체들을 보여줌
 ## Mongo 데이터베이스에서 찾기
-- 
+### db.collection.find()
+- 컬렉션의 모든 요소 또는 문서를 보여줌
+- 인수에 객체를 넣어 객체에 해당하는 요소만 찾을 수 있음
+- 커서(결과의 참조)를 반환함
+```mongo
+db.dogs.find({breed: 'Corgi'})
+```
+## Mongo 데이터베이스 업데이트하기
+### db.collection.updateOne/updageMany
+- 매치되는 첫/모든 항목을 업데이트
+- 두 가지 인수 필요
+    - 찾는 문서와 매치되는 특징
+    - 변경 내용
+- 변경 내용에는 특수 연산자를 활용해야 함
+- $set : 필드의 값을 새로운 값으로 대체하거나 추가할 때 사용
+```mongo
+db.dogs.find({breed: 'Corgi'}, {$set: {age: 5}})
+```
+- 기존에 없던 내용을 입력하면 새로 추가됨
+### db.collection.replaceOne
+- `_id`는 유지한 채로, 모든 내용을 바꿀 때 사용
+## Mongo 데이터베이스에서 삭제
+### db.collection.deleteOne/Many
+- 기준에 따라 항목을 하나/모두 삭제함
+```mongo
+db.dogs.deleteOne({breed: 'Corgi'})
+``` 
+- `deleteMany`에 인수로 `{}`를 넣으면 모든 항목을 삭제함
+### 기타 Mongo 연산자
+- 객체의 값으로 검색을 할 때는 키를 따옴표로 묶어야 함
+```mongo
+db.dogs.findOne({'personality.childFriendly': true})
+```
+### $gt/gte/lte/lt
+- 비교 연산자(초과/이상/이하/미만)
+- `db.dogs.find({age: {$gt: 8}})`
+### $in/nin
+- 배열 안에 어떤 값이 포함되어 있는/없는 문서를 선택
+- `db.dogs.find({breed: {$in: ['Corgi', 'Mutt']}})`
+# 섹션 37: Mongoose로 MongoDB에 접속하기
+## Mongoose란?
+- ODM
+    - Object Data/Document Mapper(객체 데이터/문서 매퍼)
+- Mongo와 Node를 연결해줌
+- 데이터나 문서를 Js 객체로 매핑
+- 기존 Mongo를 개선하여 Js에서 유용한 기능을 추가해줌
