@@ -491,3 +491,21 @@ db.dogs.findOne({'personality.childFriendly': true})
 - Mongo와 Node를 연결해줌
 - 데이터나 문서를 Js 객체로 매핑
 - 기존 Mongo를 개선하여 Js에서 유용한 기능을 추가해줌
+## Mongo에 Mongoose를 연결하기
+```js
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+	.then(() => {
+		console.log('connection open')
+	})
+	.catch(err => {
+		console.log('error')
+		console.log(err)
+	})
+```
+## 우리의 첫 번째 Mongoose 모델
+- 모델
+    - Mongoose의 도움으로 생성되는 Js 클래스
+    - MongoDB의 정보를 나타냄
+### 스키마
+- Mongo의 각기 다른 키 집합을 Js의 다른 타입으로 구조를 짜는 것
