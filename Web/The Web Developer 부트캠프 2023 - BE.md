@@ -62,22 +62,22 @@
     - [Mongo 데이터베이스 업데이트하기](#mongo-데이터베이스-업데이트하기)
     - [Mongo 데이터베이스에서 삭제](#mongo-데이터베이스에서-삭제)
     - [기타 Mongo 연산자](#기타-mongo-연산자)
-- [섹션 37: Mongoose로 MongoDB에 접속하기]
-    - [Mongoose란?]
-    - [Mongo에 Mongoose를 연결하기]
-    - [우리의 첫 번째 Mongoose 모델]
-    - [대량 삽입하기]
-    - [Mongoose로 찾기]
-    - [Mongoose로 업데이트하기]
-    - [Mongoose로 삭제하기]
-    - [Mongoose 스키마 유효성 겁사]
-    - [추가 스키마 제약조건]
-    - [Mongoose 업데이트 유효성 검사하기]
-    - [Mongoose 유효성 검사 오류]
-    - [인스턴트 메서드]
-    - [정적 메서드 추가하기]
-    - [가상 Mongoose]
-    - [Mongoose를 미들웨어로 정의하기]
+- [섹션 37: Mongoose로 MongoDB에 접속하기](#섹션-37-mongoose로-mongodb에-접속하기)
+    - [Mongoose란?](#mongoose란)
+    - [Mongo에 Mongoose를 연결하기](#mongo에-mongoose를-연결하기)
+    - [우리의 첫 번째 Mongoose 모델](#우리의-첫-번째-mongoose-모델)
+    - [대량 삽입하기](#대량-삽입하기)
+    - [Mongoose로 찾기](#mongoose로-찾기)
+    - [Mongoose로 업데이트하기](#mongoose로-업데이트하기)
+    - [Mongoose로 삭제하기](#mongoose로-삭제하기)
+    - [Mongoose 스키마 유효성 겁사](#mongoose-스키마-유효성-검사)
+    - [추가 스키마 제약조건](#추가-스키마-제약-조건)
+    - [Mongoose 업데이트 유효성 검사하기](#mongoose-업데이트-유효성-검사하기)
+    - [Mongoose 유효성 검사 오류](#mongoose-유효성-검사-오류)
+    - [인스턴트 메서드](#인스턴스-메서드)
+    - [정적 메서드 추가하기](#정적-메서드-추가하기)
+    - [가상 Mongoose](#가상-mongoose)
+    - [Mongoose를 미들웨어로 정의하기](#mongoose를-미들웨어로-정의하기)
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
 - 터미널
@@ -622,9 +622,27 @@ min: [6, 'Too few eggs']
 ## 가상 Mongoose
 - 실제 db 자체에는 존재하지 않는 스키마에 특성을 추가할 수 있게 함
 - `스키마.virtual(특성명).get(콜백)`
-## Mongoose로 미들웨어 정의하기
+## Mongoose를 미들웨어 정의하기
 - 특정 작업 실행 전후에 코드를 실행할 수 있음
 - `.pre`, `.post`
     - 코드 실행 전/후에 콜백을 실행
 # 섹션 38: 하나로 묶기: Express와 Mongoose
-## 모델 만들기
+## 프로덕트 인덱스
+```js
+app.get('/products', async (req, res) => {
+	const products = await Product.find({});
+	res.render('products/index', { products })
+})
+```
+- `Product.find()`는 모든 상품을 다 찾는데, 이것을 하는데 시간이 걸림
+- `async, await`를 통해 비동기로 만들어 찾는 것이 끝날 때 까지 다른 동작을 못하게 만듦
+## 프로덕트 디테일
+```js
+app.get('/products/:id', async (req, res) => {
+	const { id } = req.params;
+	const product = await Product.findById(id);
+	res.render('products/show', { product })
+})
+```
+- `Product.findById()`를 통해 mongoose id를 통해 상품을 찾음
+## 프로덕트 만들기
