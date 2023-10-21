@@ -1,4 +1,4 @@
-# The Web Developer 부트캠프 2023 - HTML/CSS
+# The Web Developer 부트캠프 2023 - HTML,CSS
 # 목차
 - [섹션 3: HTML: 기초](#섹션-3-html-기초)
     - [HTML 개요](#HTML-개요)
