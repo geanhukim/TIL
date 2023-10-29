@@ -52,6 +52,18 @@
     - [Express 메서드 재정의](#express-메서드-재정의)
     - [RESTful 주석 Delete](#restful-주석-delete)
 - [섹션 40: 미들웨어: Express의 키(key)](#섹션-40-미들웨어-express의-키key)
+    - [Express 미들웨어 개요](#express-미들웨어-개요)
+    - [모건-로거(Morgan-Logger) 미들웨어 사용하기](#모건-로거morgan-logger-미들웨어-사용하기)
+    - [미들웨어 정의하기](#미들웨어-정의하기)
+    - [404 경로 설정](#404-경로-설정)
+- [섹션 42: Express 앱의 오류 처리하기](#섹션-42-express-앱의-오류-처리하기)
+    - [Express의 태생적 오류 처리기](#express의-태생적-오류-처리기)
+    - [사용자 지정 오류 처리기 정의하기](#사용자-지정-오류-처리기-정의하기)
+    - [사용자 지정 오류 클래스](#사용자-지정-오류-클래스)
+    - [비동기 오류 처리하기](#비동기-오류-처리하기)
+    - [비동기 오류 처리 더 알아보기](#비동기-오류-처리-더-알아보기)
+    - [비동기 유틸리티 정의하기](#비동기-유틸리티-정의하기)
+    - [Mongoose 오류 구분하기](#mongoose-오류-구분하기)
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
 - 터미널
@@ -400,3 +412,69 @@ app.use('/dogs', (req, res, next) => {
 
 - 앱의 가장 마지막에 `app.use`를 활용하여 경로가 지정되지 않은 요청에 대한 404 상태 코드에 대한 응답을 보낼 수 있음
     - 해당하는 경로가 있을 경우에는 미들웨어보다 라우트 핸들러가 위에 있기 때문에 미들웨어가 실행되지 않음
+# 섹션 42: Express 앱의 오류 처리하기
+## Express의 태생적 오류 처리기
+- Express는 빌트인 에러 핸들러가 앱에서 발생한 모든 에러를 처리함
+## 사용자 지정 오류 처리기 정의하기
+- 다른 미들웨어 처럼 오류 처리 미들웨어 함수를 만들 수 있음
+- 4개의 인수를 필요로 함 (err, req, res, next)
+- `app.use()`뒤 가장 마지막에 정의해야 함
+- 오류가 나기만 하면 오류 처리 미들웨어가 실행됨
+- next 오류 처리 미들웨어를 불러올 때는 `next(err)`를 통해 넘겨야 함
+## 사용자 지정 오류 클래스
+- 웹 앱에서는 오류에 대한 응답으로 상태코드와 메시지를 전달하는게 일반적
+- 모든 오류마다 `res.status()`와 메시지를 각각 설정해 주는 것은 비효율적
+    - 각기 다른 상황에서 발생하는 오류들을 모두 처리하기에는 번거로움
+- 커스텀 오류를 발생하여 재사용에 용이하게 함
+```JS
+// AppError.js
+class AppError extends Error {
+	constructor(message, status) {
+		super();
+		this.message = message;
+		this.status = status;
+	}
+}
+module.exports = AppError;
+
+// index.js 미들웨어
+throw new AppError('Password required', 401)
+```
+- 빌트인 오류를 확장해서 사용
+- 디폴트 오류 핸들러는 `err.status`를 찾아서 상태코드를 전달해줌
+- Js 디폴트 Error 클래스에는 status가 없기 때문에 커스텀 오류를 만들 때 직접 입력 해 줘야 함
+
+```js
+app.use((err, req, res, next) => {
+	const {status=500, message='Something Went Wrong'} = err;
+	res.status(status).send(message)
+})
+```
+- 오류 객체에 상태 코드가 없는 오류를 대비해 default 값을 정의해야 함
+## 비동기 오류 처리하기
+- 라우트 핸들러와 미들웨어에 의해 발동된 비동기 함수에서 반환된 오류는 `next()`로 전달해야 함
+- `next()`로 오류 핸들러로 전달한 후 `next()` 뒤에 있는 코드가 실행 되어 다른 오류(ex. 컴파일 오류) 가 발생할 수 있음
+    - `next()`를 `return`하여 뒤에 있는 코드가 실행되지 않게 만듦
+## 비동기 오류 처리 더 알아보기
+- AppError와 같은 커스텀 에러가 아닌 Mongoose에서 오는 오류나 우연이 생긴 오류 등 `next()`로 전달할 오류가 없는 경우도 있음
+- try..catch 문을 활용함
+```js
+try{
+    ...
+}
+catch(e) {
+    next(e)
+}
+```
+## 비동기 유틸리티 정의하기
+- 비동기 함수를 인수로 하는 새로운 함수를 정의
+```js
+function wrapAsync(fn) {
+    return function (req, res, next) {
+        fn(req, res, next).catch(e => next(e))
+    }
+}
+```
+## Mongoose 오류 구분하기
+- Mongoose가 발생시키는 에러는 `name` 특성을 가지고 있음
+- 기존의 에러 핸들러와 다른 핸들러를 만들고, err.name이 특정 Mongoose 에러 메세지와 같을 때 실행될 함수를 만들어 따로 처리할 수 있음
