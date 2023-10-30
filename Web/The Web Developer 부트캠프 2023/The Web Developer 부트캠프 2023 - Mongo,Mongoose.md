@@ -267,6 +267,108 @@ min: [6, 'Too few eggs']
 - 독립적인 테이블을 만들고 이들 간의 참조 관계를 만들어 중복을 줄임
 ## One to Few 관계
 - 데이터를 문서에 직접 저장하는 방식
-```mongo
+```js
+const userSchema = new mongoose.Schema({
+	first: String,
+	last: String,
+	addresses: [
+		{
+			street: String,
+			city: String,
+			state: String,
+			country: String
+		}
+	]
+})
 
+const makeUser = async () => {
+	const u = new User({
+		first: 'Harry',
+		last: 'Potter'
+	})
+	u.addresses.push({
+		street: '123 Sesame St',
+		city: 'New York',
+		state: 'NY',
+		country: 'USA'
+	})
+	const res = await u.save()
+	consle.log(res)
+}
 ```
+- Mongoose에서 확인하면 adresses가 `_id`를 가지고 있음
+    - 다른 문서로 취급
+    - id가 필요 없다면 adresses에 `_id: {_id: false}`를 추가
+## One to Many 관계
+- 다른 곳에 정의된 문서의 참조를 부모 문서에 임베드 하는 방법
+    - 보통 객체 ID를 사용함
+```js
+const { Schema } = mongoose;
+
+const productSchema = new Schema({
+	name: String,
+	price: Number,
+	season: {
+		type: String,
+		enum: ['Spring', 'Summer', 'Fall', 'Winter']
+	}
+})
+
+const farmSchema = new Schema({
+	name: String,
+	city: String,
+	products: [{type: Schema.Types.ObjectId, ref: 'Product'}]
+})
+```
+- product를 참조하기 위해 products의 타입을 ObjectId로 설정
+- 객체 저장 후 mongo에서 확인하면 farm 객체의 products는 ObjectId를 값으로 가지고 있음
+```mongo
+{ "_id" : ObjectId("653f3bfeaec42a9ddf548b15"), "name" : "Full Belly Farm
+s", "city" : "Guinda, CA", "products" : [ ObjectId("653f399c09d9c1b73f141
+bb3")]}
+```
+## Mongoose의 Populate 명령어
+- `populate()`를 사용하면 Mongoose에서 ObjectId로만 보이던 문서를 실제 문서내용으로 대채해서 보여줌
+```js
+//js
+Farm.findOne({name: 'Full Belly Farms'})
+	.populate('products')
+	.then(farm => console.log(farm)); 
+
+
+//Mongoose
+ {_id: new ObjectId("653f3bfeaec42a9ddf548b15"),
+  name: 'Full Belly Farms',
+  city: 'Guinda, CA',
+  products: [
+    {
+      _id: new ObjectId("653f399c09d9c1b73f141bb3"),
+      name: 'Goodes Melon',
+      price: 4.99,
+      season: 'Summer',
+    }
+  ]
+ }
+```
+## One to "Bajillions" 관계
+- 자식 문서나 항목이 아주 많을 때 쓸 쑤있는 방법
+-  부모에 대한 참조를 자식 문서에 저장 
+    - ex) 한 유저가 많은 트윗을 올릴 때 유저 문서에 모든 트윗의 참조를 임베드 하기 보다, 각 트윗마다 유저 문서의 Id를 임베드 하는 방법
+```js
+const userSchema = new Schema({
+	username: String,
+	age: Number	
+})
+
+const tweetShcema = new Schema({
+	text: String,
+	likes: Number,
+	user: {type: Schema.Types.ObjectId, ref: 'User'}
+})
+```
+## Mongo 스키마 디자인
+- 하지 말아야 할 이유가 없는 한 정보를 임베드 하라
+- 임베드하지 않을 이유는 객체에 따로 액세스 하는 경우가 있을 경우
+- 제한 없이 계속 커지는 배열은 피해야 한다
+- 비정규화를 할 떄 읽기-쓰기 비율을 고려해라
+- 데이터를 모델링하는 방식은 데이터 액세스 패턴에 달려있다.
