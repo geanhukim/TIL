@@ -520,3 +520,13 @@ app.use('/shelters', shelterRoutes);
 ## 쿠키 보내기
 - `res.cookie('쿠키명', '쿠키값')`을 통해 브라우저에 쿠키를 전달할 수 있음
 ## 쿠키 파서 미들웨어
+- cookie-parser 패키지를 통해 모든 요청에 `request.cookies`라는 특성이 포함됨
+- `app.use(cookieParser())`
+## 쿠키 서명하기
+- 서명 : 정보가 변하지 않았음을 확인하는 방식
+- 쿠키 파서가 비밀코드로 쿠키에 서명
+- 서명된 쿠키를 클라이언트 측에서 다른 쿠키들과 마찬가지로 돌려줌
+- 서버 측에서는 서명된 쿠키를 살펴보아 누군가 쿠키를 건들이지 않았는지 확인함
+- `res.cookie()`에 `{signed: true}`를 인수로 추가함
+- 서명된 쿠키는 `req.cookies`에서 확인할 수 없음
+    - `req.signedCookies`에서 확인 가능
