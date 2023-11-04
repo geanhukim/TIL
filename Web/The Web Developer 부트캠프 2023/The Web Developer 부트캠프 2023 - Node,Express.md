@@ -64,18 +64,18 @@
     - [비동기 오류 처리 더 알아보기](#비동기-오류-처리-더-알아보기)
     - [비동기 유틸리티 정의하기](#비동기-유틸리티-정의하기)
     - [Mongoose 오류 구분하기](#mongoose-오류-구분하기)
-- [섹션 47: Express의 라우터와 쿠키]
-    - [Express 라우터 개요]
-    - [Express 라우터와 미들웨어]
-    - [쿠키 개요]
-    - [쿠키 보내기]
-    - [쿠키 파서 미들웨어]
-    - [쿠키 서명하기]
-- [섹션 48: Express의 세션과 플래시]
-    - [세션 개요]
-    - [Express 세션]
-    - [Express 세션 더 알아보기]
-    - [플래시 개요]
+- [섹션 47: Express의 라우터와 쿠키](#섹션-47-express의-라우터와-쿠키)
+    - [Express 라우터 개요](#express-라우터와-개요)
+    - [Express 라우터와 미들웨어](#express-라우터와-미들웨어)
+    - [쿠키 개요](#쿠키-개요)
+    - [쿠키 보내기](#쿠키-보내기)
+    - [쿠키 파서 미들웨어](#쿠키-파서-미들웨어)
+    - [쿠키 서명하기](#쿠키-서명하기])
+- [섹션 48: Express의 세션과 플래시](#섹션-48-express의-세션과-플래시)
+    - [세션 개요](#세션-개요)
+    - [Express 세션](#express-세션)
+    - [플래시 개요](#플래시-개요)
+    - [Res.loclas와 플래시](#reslocas와-플래시)
 
 # 섹션 30: 터미널 완벽 정리
 ## 터미널 명령이란?
@@ -530,3 +530,55 @@ app.use('/shelters', shelterRoutes);
 - `res.cookie()`에 `{signed: true}`를 인수로 추가함
 - 서명된 쿠키는 `req.cookies`에서 확인할 수 없음
     - `req.signedCookies`에서 확인 가능
+# 섹션 48: Express의 세션과 플래시
+## 세션 개요
+- 클라이언트 측(브라우저)에 저장하는 쿠키와 달리 서버 측에 저장하는 방식
+    - WHY? : 브라우저에 저장할 수 있는 쿠키의 정보량의 한계, 서버 측 정보저장의 안전성
+- 서버 -> 브라우저
+    - 서버에 세션으로 정보를 저장하고 브라우저에 세션에 접근 가능한 키(ex. ID)를 브라우저로 전달함
+- 브라우저 -> 서버
+    - 브라우저는 서버로부터 전달받은 키를 쿠키로 저장, 이후 키를 활용하여 서버측에 데이터 접근 요청
+## Express 세션
+```js
+const session = require('express-session');
+
+// 세션을 사용하기 위한 비밀키 설정
+app.use(session{secret: 'thisisnotagoodsecret'});
+
+```
+- express session을 사용하게 되면 미들웨어, 라우트에서 `req.session`을 사용해 세션에 접근 가능함
+    - `req.session`에는 원하는 모든 것을 추가할 수 있음
+    - 세션의 데이터는 서버측에 저장
+- 브라우저는 `connect.session.id`라는 쿠키를 전달받음
+    - 브라우저에서 요청을 보낼 때 마다 해당 쿠키가 전달됨
+- 이러한 세션은 `MemoryStore`라는 Js에 있는 메모리에 저장됨
+    - 디버깅과 개발을 위한 것이므로 다른 세션 저장소를 사용해야 함(ex. Redis, Mongo)
+## 플래시 개요
+- 세션에서 사용자에게 메세지를 출력하는 장소
+    - ex) 로그인, 로그아웃, 작업 완료 등의 메세지
+- `req.flash('키','플래시 메세지')`으로 `req.flash`에 키-값 쌍을 전달
+- `req.render`를 할 때 `{messages : req.flash('키')}`를 전달하여 해당 view에서 플래시 메세지를 활용할 수 있게 함
+```js
+app.get('/farms', (req,res) => {
+    ...
+    res.render('farms/index', {farms, messages: req.flash('success')})
+})
+
+app.post('/farms', (req, res) => {
+    ...
+    req.flash('success', 'Successfully made a new farm');
+    res.redirect('/famrs')
+})
+```
+## Res.locas와 플래시
+- `res.render`를 할 때 일일이 `message`를 전달하는 것이 귀찮음
+- 미들웨어를 사용
+- res.locals
+    - 요청-응답 주기에만 렌더링 되는 응답 로컬 변수
+```js
+app.use((req,res,next) => {
+    res.locals.mesasges = req.flash('success');
+    next()
+})
+```
+- 모든 라우트, 미들웨어에 `success` 플래시 메세지를 전달함
