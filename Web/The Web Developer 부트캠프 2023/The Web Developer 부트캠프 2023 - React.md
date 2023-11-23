@@ -34,3 +34,42 @@ function App() {
 - 컴포넌트 이름의 첫 글자는 대문자
 - jsx를 return 함
 - `App` 컴포넌트에 추가할려면 `<Header/>`와 같은 방식으로 추가 해야 함
+# 섹션 61: JSX 세부 사항
+## 컴포넌트 가져오기
+- 보통 리액트 애플리케이션을 만들 때는 한 파일에 한 개의 컴포넌트를 넣음
+- import, export를 사용하여 파일들을 연결해줌
+```js
+// Greeter.js
+export default function Greeter() {
+    return <h1>HELLO!</h1>
+  }
+
+// App.js
+import Greeter from "./Greeter"
+...
+```
+- export를 할 때 deafult를 써서 내보내는 게 일반적
+    - import, export를 할 때 이름이 같을 필요 없음
+    - export는 Dog로, import는 Doggy로 해도 됨
+    - but, 잘 쓰이지 않음 -> 혼란스럽기 때문에
+- {}를 활용하여 여러 개의 요소를 내보낼 수도 있음
+    - {}를 활용할 때는 import와 export 하는 것의 이름이 같아야함
+- ex) `export {Dog}`, `import {Dog} from "./Dog.js`
+## JSX 규칙
+- `<img>`, `<br>`, `<input>`과 같이 닫는 태그가 필요없는 태그들도 닫는 태그를 명시해야 함
+    - ex) `<br/>`, `<input type='password'/>`
+- 컴포넌트는 하나의 요소, 하나의 상위 요소만 반환해야 함
+    - 한 컴포넌트가 두 개의 `<input>`을 반환할 수는 없지 만, 두 개를 묶은 `<div>`는 반환할 수 있음
+- 요소들을 return할 때 괄호로 감싸면 HTML처럼 들여쓰기하여 보낼 수 있음
+``` js
+export default function LoginFrom() {
+  return (
+    <div>
+      <input type="text" />
+      <input type="password" />
+    </div>
+  );
+}
+```
+## 리액트 프래그먼트
+- 
