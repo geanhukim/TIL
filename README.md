@@ -12,3 +12,5 @@
 - [The Web Developer 부트캠프 2023 - Node,Express](https://github.com/geanhukim/TIL/blob/main/Web/The%20Web%20Developer%20%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84%202023/The%20Web%20Developer%20%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84%202023%20-%20Node%2CExpress.md)
 - [The Web Developer 부트캠프 2023 - Mongo,Mongoose](https://github.com/geanhukim/TIL/blob/main/Web/The%20Web%20Developer%20%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84%202023/The%20Web%20Developer%20%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84%202023%20-%20Mongo%2CMongoose.md)
 - [The Web Developer 부트캠프 2023 - React](https://github.com/geanhukim/TIL/blob/f5e5a29ea09d774d19bdd70f5c99f621727bdf41/Web/The%20Web%20Developer%20%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84%202023/The%20Web%20Developer%20%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84%202023%20-%20React.md)
+## AI
+- [AI/케라스 창시자에게 배우는 딥러닝.md](https://github.com/geanhukim/TIL/blob/main/AI/%EC%BC%80%EB%9D%BC%EC%8A%A4%20%EC%B0%BD%EC%8B%9C%EC%9E%90%EC%97%90%EA%B2%8C%20%EB%B0%B0%EC%9A%B0%EB%8A%94%20%EB%94%A5%EB%9F%AC%EB%8B%9D.md)
